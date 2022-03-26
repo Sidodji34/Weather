@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reset.css">
+    <title>Weather</title>
+</head>
+<body>
+    <div class="body_weather">
+        <div class="content">
+            <form class="input" action="#tab_now">
+                <input class='search_town' type="text" placeholder="Enter a town...">
+                <button type="submit" class="button_search" style="background-image: url(images/search.svg);"></button>
+            </form>
+            <div class="right_bar">
+                <div class="add_locations">Added Locations:</div>
+                <div class="locations_list">
+                    <ul class="list">
+                       
+                    </ul>
+                </div>
+            </div>
+            <div class="left_bar">
+                <div class="tabs_body">
+                    <div id="tab_now" class="tabs_block">
+                        <div class="degrees" class="tabs_block"></div>
+                        <div class="icon" class="tabs_block">
+                            <img class="icon" src="" alt=".">
+                        </div>
+                        <div class="name_town_now"></div>
+                        <button class="add_like" style="background-image: url(images/like.svg);"></button>
+                    </div> 
+                    <div id="tab_details" class="tabs_block">
+                        <div class="name_town_details"></div>
+                        <ul class="info_town">
+                            <li class="degrees_details">Temperature: </li>
+                            <li class="feels_like">Feels like: </li>
+                            <li class="weather_details">Weather: </li>
+                            <li class="sunrise_details">Sunrise: </li>
+                            <li class="sunset_details">Sunset: </li>
+                        </ul>
+                    </div>
+                    <div id="tab_forecast" class="tabs_block">
+                        <div class="name_town_forecast"></div>
+                        <div class="forecast_list">
+                            
+                        </div>
+                    </div>
+            </div>
+                </div>
+                <div class="tabs">
+                    <div class="tabs_items">
+                        <a href="#tab_now" class="tabs_item" id="now">Now</a>
+                        <a href="#tab_details" class="tabs_item" id="details">Details</a>
+                        <a href="#tab_forecast" class="tabs_item" id="forecast">Forecast</a>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./main.js"></script>
+<script type="module" src="./view.js"></script>
+<script type="module" src="./storage.js"></script>
+</html>
