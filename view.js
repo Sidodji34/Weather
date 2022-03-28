@@ -45,9 +45,9 @@ const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
 INPUT.SEARCH_BUTTON.addEventListener('click', tabNow);
 
 export async function tabNow(cityName) {
+  
   TAB_FORECAST.FORECAST_LIST.innerHTML = '';
   try {
-    sessionStorage.clear();
     cityName = INPUT.INPUT_FIELD.value;
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
     const response = await fetch(url);
@@ -63,7 +63,7 @@ export async function tabNow(cityName) {
   } finally {
     INPUT.INPUT_FIELD.value = '';
   }
-}
+};
 
 export function tabDetails(result) {
   const SUNRISE = new Date(result.sys.sunrise * 1000);
