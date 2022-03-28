@@ -1,6 +1,13 @@
 import { TAB_NOW, INPUT, RIGHT_BAR, TAB_DETAILS, TAB_FORECAST } from "./view.js";
 import { removeFavoriteTowns, favoriteTowns } from "./storage.js";
+export const mouthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 export const listCityes = favoriteTowns;
+
+export function getDate() {
+  let date = new Date();
+  return `${date.getDate()} ${mouthList.find(month => month == mouthList[date.getMonth()])}`
+};
+
 export function isListTown(list) {
   list = listCityes;
   if (TAB_NOW.NAME_TOWN.textContent === '') {
@@ -40,5 +47,4 @@ export function refreshTabs() {
   TAB_DETAILS.SUNRISE.textContent = 'Sunrise:';
   TAB_DETAILS.SUNSET.textContent = 'Sunset:';
   TAB_FORECAST.NAME_TOWN.textContent = '';
-}
-
+};

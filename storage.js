@@ -24,15 +24,15 @@ export function isLastForecast(key, value) {
   sessionStorage.setItem(`${key}`, value)
 };
 
-export function getLastSession() {
-  if (sessionStorage.oldValue) {
+/*export function getLastSession() {
+  if (INPUT.INPUT_FIELD.value === '') {
     TAB_NOW.TAB.innerHTML = sessionStorage.getItem('tab_now')
     TAB_DETAILS.TAB.innerHTML = sessionStorage.getItem('tab_details')
     TAB_FORECAST.TAB.innerHTML = sessionStorage.getItem('tab_forecast')
   }
-  if (sessionStorage.newValue) {
-    TAB_NOW.TAB.innerHTML = '';
-    TAB_DETAILS.TAB.innerHTML = '';
-    TAB_FORECAST.TAB.innerHTML = '';
+  if (INPUT.INPUT_FIELD.value != '') {
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let key = sessionStorage.key(i);
+    }
   }
-};
+};*/

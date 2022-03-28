@@ -1,5 +1,5 @@
-import { isListTown, refreshTabs } from "./main.js";
-import { getFavoriteTowns, saveFavoriteTowns, isLastForecast, getLastSession } from "./storage.js";
+import { getDate, isListTown, refreshTabs } from "./main.js";
+import { getFavoriteTowns, saveFavoriteTowns, isLastForecast } from "./storage.js";
 export const INPUT = {
   INPUT_FIELD: document.querySelector('.search_town'),
   SEARCH_BUTTON: document.querySelector('.button_search'),
@@ -36,8 +36,7 @@ export const RIGHT_BAR = {
   NAME_TOWN: document.getElementsByClassName('name__town'),
   DELITE_BUTTON: document.getElementsByClassName('btn__delite'),
 };
-
-getLastSession();
+//getLastSession();
 getFavoriteTowns();
 const apiKey = '35cb3bc18d86d923883a89ca2a503caf';
 const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
@@ -45,7 +44,6 @@ const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
 INPUT.SEARCH_BUTTON.addEventListener('click', tabNow);
 
 export async function tabNow(cityName) {
-  
   TAB_FORECAST.FORECAST_LIST.innerHTML = '';
   try {
     cityName = INPUT.INPUT_FIELD.value;
@@ -106,7 +104,9 @@ export async function tabForecast(lat, lon) {
 function hourlyForecast() {
   const boxOutput = document.createElement('div');
   boxOutput.className = 'forecast_box';
-  boxOutput.insertAdjacentHTML('afterbegin', `<p class="info__date">20 March</p>
+  boxOutput.insertAdjacentHTML('afterbegin', `<p class="info__date">
+  ${getDate()}
+  </p>
   <ul class="info__forecast">
       <li class="degrees_details">${TAB_FORECAST.DEGREES.textContent}</li>
       <li class="feels_like">${TAB_FORECAST.FEELS_LIKE.textContent}</li>
