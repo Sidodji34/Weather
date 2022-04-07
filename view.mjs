@@ -1,18 +1,18 @@
-import { getDate, isListTown, refreshTabs } from "./main.js";
-import { getFavoriteTowns, saveFavoriteTowns, isLastForecast } from "./storage.js";
+import { isListTown } from "./main.js";
+import { getFavoriteTowns, saveFavoriteTowns, getLastSession, lastSession } from "./storage.js";
+import { compareAsc, format, getDaysInMonth } from "date-fns";
+
 export const INPUT = {
   INPUT_FIELD: document.querySelector('.search_town'),
   SEARCH_BUTTON: document.querySelector('.button_search'),
 };
 export const TAB_NOW = {
-  TAB: document.getElementById('tab_now'),
   DEGREES: document.querySelector('.degrees'),
   NAME_TOWN: document.querySelector('.name_town_now'),
   ICON: document.querySelector('.icon'),
   ICON_LIKE: document.querySelector('.add_like'),
 };
 export const TAB_DETAILS = {
-  TAB: document.getElementById('tab_details'),
   NAME_TOWN: document.querySelector('.name_town_details'),
   DEGREES: document.querySelector('.degrees_details'),
   FEELS_LIKE: document.querySelector('.feels_like'),
@@ -21,7 +21,6 @@ export const TAB_DETAILS = {
   SUNSET: document.querySelector('.sunset_details'),
 };
 export const TAB_FORECAST = {
-  TAB: document.getElementById('tab_forecast'),
   NAME_TOWN: document.querySelector('.name_town_forecast'),
   DATE: document.getElementsByClassName('.info__date'),
   DEGREES: document.getElementsByClassName('.degrees_details'),
@@ -36,30 +35,35 @@ export const RIGHT_BAR = {
   NAME_TOWN: document.getElementsByClassName('name__town'),
   DELITE_BUTTON: document.getElementsByClassName('btn__delite'),
 };
-//getLastSession();
+
+getLastSession();
 getFavoriteTowns();
-const apiKey = '35cb3bc18d86d923883a89ca2a503caf';
-const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
 
 INPUT.SEARCH_BUTTON.addEventListener('click', tabNow);
-
-export async function tabNow(cityName) {
+export async function tabNow() {
   TAB_FORECAST.FORECAST_LIST.innerHTML = '';
-  try {
+  const apiKey = '35cb3bc18d86d923883a89ca2a503caf';
+  const serverUrl = 'http://api.openweathermap.org/data/2.5/weather';
+  let cityName;
+  if (INPUT.INPUT_FIELD.value === '') {
+    cityName = lastSession.nameTown;
+  }
+  if (INPUT.INPUT_FIELD.value) {
     cityName = INPUT.INPUT_FIELD.value;
+  }
+  try {
     const url = `${serverUrl}?q=${cityName}&appid=${apiKey}`;
     const response = await fetch(url);
     const result = await response.json();
     TAB_NOW.NAME_TOWN.textContent = result.name;
     TAB_NOW.DEGREES.textContent = `${Math.round(+result.main.temp) - 273}°`;
     TAB_NOW.ICON.innerHTML = `<div class="icon" class="tabs_block" style="background-image: url(http://openweathermap.org/img/wn/${result.weather[0].icon}.png);"></div>`;
-    isLastForecast('tab_now', TAB_NOW.TAB.innerHTML);
     return tabDetails(result);
   } catch (error) {
-    alert('This city does not exist');
-    refreshTabs();
+    console.log(error);
   } finally {
     INPUT.INPUT_FIELD.value = '';
+    document.cookie = `nameTown=${TAB_NOW.NAME_TOWN.textContent}; max-age=3600`;
   }
 };
 
@@ -75,10 +79,10 @@ export function tabDetails(result) {
   TAB_DETAILS.SUNRISE.textContent = `Sunrise: ${SUNRISE.getHours()}:${formattedMinutesSunrise}`;
   TAB_DETAILS.SUNSET.textContent = `Sunset: ${SUNSET.getHours()}:${formattedMinutesSunset}`;
   tabForecast(result.coord.lat, result.coord.lon);
-  isLastForecast('tab_details', TAB_DETAILS.TAB.innerHTML);
 };
 
 export async function tabForecast(lat, lon) {
+  const apiKey = '35cb3bc18d86d923883a89ca2a503caf';
   try {
     const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude={hourly}&appid=${apiKey}`;
     const response = await fetch(url);
@@ -95,10 +99,9 @@ export async function tabForecast(lat, lon) {
       hourlyForecast();
       i += 2;
     }
-    isLastForecast('tab_forecast', TAB_FORECAST.TAB.innerHTML);
   } catch (error) {
       alert(error);
-  }
+  } 
 };
 
 function hourlyForecast() {
@@ -119,21 +122,20 @@ function hourlyForecast() {
 };
 
 TAB_NOW.ICON_LIKE.addEventListener('click', addLocations);
-export function addLocations() {
+export function addLocations(nameTown) {
   if (isListTown()) {
-    let townName = TAB_NOW.NAME_TOWN.textContent;
+    nameTown = TAB_NOW.NAME_TOWN.textContent;
     let addTown = document.createElement('li');
     addTown.innerHTML = `
     <li class="town_in_list">
     <div>
-        <button class="name__town">${townName}</button>
+        <button class="name__town">${nameTown}</button>
         <button class="btn__delite">x</button>
     </div>
     </li>`
     addTown.className = "town_in_list";
     RIGHT_BAR.LIST_TOWN.prepend(addTown);
-    const value = addTown.closest('li');
-    saveFavoriteTowns(`${townName}`, value.innerHTML);
+    saveFavoriteTowns(`${nameTown}`, addTown.innerHTML);
   }
 };
 
@@ -146,3 +148,7 @@ RIGHT_BAR.LIST_TOWN.addEventListener('click', function (event) {
     tabNow();
   }
 });
+
+function getDate() {
+  return format(new Date(), 'd MMMM');
+};

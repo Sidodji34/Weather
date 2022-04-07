@@ -1,0 +1,24 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "Weather",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sidodji34/Weather.git"
+  },
+  "keywords": [
+    "npm",
+    "weather"
+  ],
+  "author": "Sidodji34",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sidodji34/Weather/issues"
+  },
+  "homepage": "https://github.com/Sidodji34/Weather#readme"
+}
